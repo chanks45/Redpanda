@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Chubby Red Panda HUD</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="cockpit" class="theme-classic">
+    <section id="panda" aria-label="Red panda vehicle HUD">
+      <svg id="pandaSvg" viewBox="0 0 420 410" role="img" aria-label="Red panda speedometer">
+        <defs>
+          <linearGradient id="fur" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffb16c"/>
+            <stop offset=".48" stop-color="#d65a32"/>
+            <stop offset="1" stop-color="#87351f"/>
+          </linearGradient>
+          <linearGradient id="cream" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fff2d7"/>
+            <stop offset="1" stop-color="#e7c6a2"/>
+          </linearGradient>
+          <linearGradient id="eyeGlow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#172b31"/>
+            <stop offset="1" stop-color="#050b0e"/>
+          </linearGradient>
+          <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="3.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#080b10" flood-opacity=".6"/>
+          </filter>
+        </defs>
+
+        <!-- ears and head silhouette -->
+        <g class="ear-left">
+          <path class="ear-fur" d="M76 126 43 43Q39 27 57 34L133 74Z"/>
+          <path class="ear-inner" d="M69 86 57 51 100 78Z"/>
+          <path class="ear-stripe" d="M54 48 67 79 77 75Z"/>
+        </g>
+        <g class="ear-right">
+          <path class="ear-fur" d="M344 126 377 43Q381 27 363 34L287 74Z"/>
+          <path class="ear-inner" d="M351 86 363 51 320 78Z"/>
+          <path class="ear-stripe" d="M366 48 353 79 343 75Z"/>
+        </g>
+        <path class="head-outline" filter="url(#shadow)" d="M70 137Q67 94 113 79Q151 57 210 63Q269 57 307 79Q353 94 350 137Q373 169 359 220Q353 276 306 303Q266 329 210 330Q154 329 114 303Q67 276 61 220Q47 169 70 137Z"/>
+        <path class="head-cream" d="M87 174Q104 139 147 144Q174 146 190 176Q183 213 158 235Q126 253 95 228Q80 207 87 174Z"/>
+        <path class="head-cream" d="M333 174Q316 139 273 144Q246 146 230 176Q237 213 262 235Q294 253 325 228Q340 207 333 174Z"/>
+        <path class="forehead-mark" d="M174 87Q210 108 246 87L235 126Q210 143 185 126Z"/>
+
+        <!-- left digital eye / speedometer -->
+        <g class="left-eye">
+          <path class="eye-socket" d="M94 164Q124 140 166 158Q183 177 171 210Q145 234 112 216Q91 197 94 164Z"/>
+          <path class="eye-rim" d="M101 169Q127 150 162 164Q175 181 165 205Q143 223 117 210Q100 194 101 169Z"/>
+          <text id="speedValue" class="speed-value" x="136" y="190" text-anchor="middle">000</text>
+          <text id="speedUnit" class="speed-unit" x="136" y="207" text-anchor="middle">KM/H</text>
+          <path class="eye-glint" d="M110 169Q124 158 138 160"/>
+        </g>
+
+        <!-- right digital eye / RPM -->
+        <g class="right-eye">
+          <path class="eye-socket" d="M326 164Q296 140 254 158Q237 177 249 210Q275 234 308 216Q329 197 326 164Z"/>
+          <path class="eye-rim" d="M319 169Q293 150 258 164Q245 181 255 205Q277 223 303 210Q320 194 319 169Z"/>
+          <path id="rpmArc" class="rpm-arc" d="M258 199 A34 34 0 0 1 310 199" fill="none" stroke-width="4" stroke-linecap="round"/>
+          <circle id="rpmPupil" cx="284" cy="187" r="13" class="rpm-pupil"/>
+          <text id="rpmValue" class="rpm-value" x="284" y="207" text-anchor="middle">0.0</text>
+          <path class="eye-glint" d="M279 162Q294 159 305 169"/>
+          <path class="fire" d="M254 170Q241 155 253 143Q252 157 265 158Q260 143 273 136Q269 154 281 159L276 174Z"/>
+          <path class="tear" d="M314 196Q329 211 315 222Q302 214 314 196Z"/>
+        </g>
+
+        <!-- cheeks -->
+        <ellipse class="blush blush-left" cx="93" cy="239" rx="25" ry="13"/>
+        <ellipse class="blush blush-right" cx="327" cy="239" rx="25" ry="13"/>
+        <path class="cheek-stripe" d="M73 230l12 5m-14 2 12 5m241-12-12 5m14 2-12 5"/>
+
+        <!-- nose and muzzle -->
+        <g id="nose">
+          <path class="muzzle" d="M167 218Q185 207 210 214Q235 207 253 218Q251 248 231 258Q210 268 189 258Q169 248 167 218Z"/>
+          <path class="nose-shape" d="M194 218Q210 207 226 218Q225 231 210 233Q195 231 194 218Z"/>
+          <path class="nose-shine" d="M201 216Q210 211 218 217"/>
+          <path class="headlight-ray" d="M184 224 161 214M236 224 259 214"/>
+        </g>
+
+        <!-- mouth expression layers -->
+        <g id="mouth">
+          <path class="mouth-line" d="M210 234 210 248Q195 263 183 248M210 248Q225 263 237 248"/>
+          <path class="mouth-open" d="M180 245Q210 276 240 245Q235 273 210 277Q185 273 180 245Z"/>
+          <path class="mouth-teeth" d="M193 250L205 250 204 261Q198 262 193 250ZM215 250L227 250 221 261Q215 262 215 250Z"/>
+          <path class="tongue" d="M199 267Q210 260 221 267Q219 276 210 276Q201 276 199 267Z"/>
+          <g class="bamboo">
+            <path d="M147 278Q177 267 201 278L198 289Q173 282 151 290Z"/>
+            <path d="M158 276 157 287M174 274 173 285M189 276 188 287"/>
+            <path d="M145 276Q139 268 145 263Q153 266 154 276Z"/>
+          </g>
+          <path class="broken-tooth" d="M194 250 204 250 201 256 198 253 196 257Z"/>
+        </g>
+
+        <!-- state decorations -->
+        <g class="bandage"><path d="M276 121l37 18-8 16-37-18Z"/><path d="m282 130 8-7m0 18 8-7m0 18 8-7"/></g>
+        <g class="cold-sweat"><path d="M346 207Q361 226 347 239Q332 230 346 207Z"/></g>
+        <g class="spirals"><path d="M111 151c-12-12 8-24 16-10 5 9-8 14-12 6m184 4c12-12-8-24-16-10-5 9 8 14 12 6"/></g>
+        <g class="sleep-lids"><path d="M100 187Q136 211 170 185M250 185Q284 211 320 187"/></g>
+        <g class="sleep-bubble"><circle cx="343" cy="128" r="12"/><circle cx="359" cy="112" r="7"/><text x="342" y="133">Z</text></g>
+
+        <!-- neck pendant and readouts -->
+        <path class="neck-fur" d="M151 303Q210 327 269 303L286 350Q210 376 134 350Z"/>
+        <path class="pendant-chain" d="M172 319Q210 343 248 319"/>
+        <path class="pendant" d="M174 329Q210 345 246 329L239 379Q210 393 181 379Z"/>
+        <text class="pendant-label" x="210" y="348" text-anchor="middle">GEAR</text>
+        <text id="gearValue" class="gear-value" x="210" y="367" text-anchor="middle">N</text>
+        <text class="odo-label" x="210" y="402" text-anchor="middle">ODO <tspan id="odoValue">000000</tspan></text>
+        <text class="brand" x="210" y="29" text-anchor="middle">RED PANDA // DRIVE CORE</text>
+      </svg>
+
+      <div class="status-row">
+        <span id="engineStatus" class="status-pill">ENGINE ON</span>
+        <span id="fuelValueText" class="status-pill">FUEL 100%</span>
+        <span id="healthValueText" class="status-pill">HEALTH 100%</span>
+      </div>
+      <div class="status-row status-row-bottom">
+        <span id="lightValue" class="status-pill">LIGHTS OFF</span>
+        <span id="beltValue" class="status-pill">BELT ON</span>
+      </div>
+      <div id="settingsHint">F2 · HUD SETTINGS</div>
+    </section>
+
+    <audio id="speedAlarmAudio" preload="auto" loop>
+      <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+    </audio>
+
+    <section id="settingsMenu" aria-label="HUD settings">
+      <header class="panel-header">
+        <div><strong>RED PANDA HUD</strong><small>COCKPIT CONFIGURATION</small></div>
+        <button id="closeSettings" class="icon-btn" aria-label="Close settings">×</button>
+      </header>
+      <div class="settings-actions">
+        <button data-act="move">Move HUD</button>
+        <button data-act="resize">Resize HUD</button>
+        <button data-act="reset">Reset</button>
+      </div>
+      <label class="field-label" for="themeSelect">HUD Theme</label>
+      <select id="themeSelect">
+        <option value="classic">Classic Ember</option>
+        <option value="snow">Arctic Cyan</option>
+        <option value="midnight">Midnight Violet</option>
+      </select>
+      <p class="help-text">Drag HUD to move it. Scroll while resize mode is active to scale it. Press F2 to toggle this panel.</p>
+
+      <section id="music-panel">
+        <header class="music-header">
+          <div><strong>NEON RADIO</strong><small>YOUTUBE PLAYER</small></div>
+          <button id="btn-music-add-toggle" class="icon-btn" title="Add a track">＋</button>
+        </header>
+        <div class="music-now">
+          <div id="music-cover" class="music-cover"><span>♪</span></div>
+          <div class="music-track">
+            <strong id="music-track-title">Select a track</strong>
+            <small id="music-track-subtitle">YouTube playlist</small>
+          </div>
+        </div>
+        <div id="music-player-placeholder">Player ready</div>
+        <div id="youtube-player" class="youtube-player"></div>
+        <div class="music-controls">
+          <button id="btn-music-prev" aria-label="Previous">◀</button>
+          <button id="btn-music-play" aria-label="Play or pause">▶</button>
+          <button id="btn-music-next" aria-label="Next">▶|</button>
+          <button id="btn-music-repeat" aria-label="Repeat" title="Repeat">↻</button>
+          <button id="btn-music-shuffle" aria-label="Shuffle" title="Shuffle">⤨</button>
+          <button id="btn-music-mute" aria-label="Mute" title="Mute">♪</button>
+        </div>
+        <div class="music-time"><span id="music-current-time">0:00</span><span id="music-duration">0:00</span></div>
+        <input id="music-progress" type="range" min="0" max="100" value="0" aria-label="Seek music">
+        <div class="volume-row"><label for="music-volume">VOL</label><input id="music-volume" type="range" min="0" max="100" value="65"></div>
+        <div id="music-add-row" class="music-add-row hidden">
+          <input id="music-url-input" type="url" placeholder="YouTube URL or video ID">
+          <input id="music-title-input" type="text" placeholder="Track title (optional)">
+          <button id="btn-music-add">Add track</button>
+        </div>
+        <div class="playlist-head"><strong>QUEUE</strong><button id="btn-music-clear" class="text-btn">Clear</button></div>
+        <ol id="music-playlist" class="music-playlist"></ol>
+      </section>
+      <div class="panel-footer"><span>CHUBBY RED PANDA</span><span>BUILD 1.0</span></div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
